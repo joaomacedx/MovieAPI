@@ -14,7 +14,6 @@ namespace MovieAPI.Controllers
         public void PostMovie([FromBody] Movie movie)
         {
             movies.Add(movie);
-            Console.WriteLine(movie.Title);
         }
 
     }
