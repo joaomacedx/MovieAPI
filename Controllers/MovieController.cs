@@ -19,8 +19,15 @@ namespace MovieAPI.Controllers
         }
         [HttpGet]
         public IEnumerable<Movie> GetMovies()
-        { 
+        {
             return movies;
         }
+
+        [HttpGet("{id}")]
+        public Movie GetMovie(int Id)
+        {
+            return movies.FirstOrDefault(movie => movie.Id == Id);
+        }
+
     }
 }
