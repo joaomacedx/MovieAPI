@@ -30,6 +30,7 @@ namespace MovieAPI.Controllers
             Movie movie = movies.FirstOrDefault(movie => movie.Id == Id);
             if (movie != null)
             {
+               
                 return Ok(movie);
             }
             return NotFound();
