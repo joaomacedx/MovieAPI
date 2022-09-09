@@ -20,7 +20,8 @@ namespace MovieAPI.Controllers
         public IActionResult PostMovie([FromBody] Movie movie)
         {
             movieContext.Movies.Add(movie);
-            return CreatedAtAction(nameof(GetMovie), new {Id = movie.Id}, movie);
+            movieContext.SaveChanges();
+            return CreatedAtAction(nameof(GetMovie), new { Id = movie.Id }, movie);
         }
         [HttpGet]
         public IEnumerable<Movie> GetMovies()
@@ -34,11 +35,27 @@ namespace MovieAPI.Controllers
             Movie movie = movieContext.Movies.FirstOrDefault(movie => movie.Id == Id);
             if (movie != null)
             {
-               
                 return Ok(movie);
             }
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
+           
         }
 
+        [HttpPut("{id}")]
+        public IActionResult PutMovie(int Id)
+        {
+            Movie movie = movieContext.Movies.FirstOrDefault(movie => movie.Id == Id);
+            if(movie == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(movie);
+            }
+        }
     }
 }
