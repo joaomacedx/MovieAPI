@@ -41,20 +41,26 @@ namespace MovieAPI.Controllers
             {
                 return NotFound();
             }
-           
+
         }
 
         [HttpPut("{id}")]
-        public IActionResult PutMovie(int Id)
+        public IActionResult PutMovie(int Id, [FromBody] Movie NewMovie)
         {
             Movie movie = movieContext.Movies.FirstOrDefault(movie => movie.Id == Id);
-            if(movie == null)
+            if (movie == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(movie);
+                movie.Title = NewMovie.Title;
+                movie.Director = NewMovie.Director;
+                movie.Gender = NewMovie.Gender;
+                movie.Duration = NewMovie.Duration;
+
+                movieContext.SaveChanges();
+                return NoContent();
             }
         }
     }
