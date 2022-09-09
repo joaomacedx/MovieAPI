@@ -73,8 +73,8 @@ namespace MovieAPI.Controllers
             }
             else
             {
-               movieContext.Remove(movie);
-               movieContext.SaveChanges();
+                movieContext.Remove(movie);
+                movieContext.SaveChanges();
                 return NoContent();
             }
         }
