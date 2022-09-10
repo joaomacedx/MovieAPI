@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Data;
+using MovieAPI.Data.Dto;
 using MovieAPI.Models;
 
 namespace MovieAPI.Controllers
@@ -17,8 +18,15 @@ namespace MovieAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostMovie([FromBody] Movie movie)
+        public IActionResult PostMovie([FromBody] CreateMovieDto movieDto)
         {
+            Movie movie = new Movie()
+            {
+                Title = movieDto.Title,
+                Director = movieDto.Director,
+                Gender = movieDto.Gender,
+                Duration = movieDto.Duration
+            };
             movieContext.Movies.Add(movie);
             movieContext.SaveChanges();
             return CreatedAtAction(nameof(GetMovie), new { Id = movie.Id }, movie);
@@ -35,7 +43,16 @@ namespace MovieAPI.Controllers
             Movie movie = movieContext.Movies.FirstOrDefault(movie => movie.Id == Id);
             if (movie != null)
             {
-                return Ok(movie);
+                ReadMovieDto movieDto = new ReadMovieDto
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    Director = movie.Director,
+                    Gender = movie.Gender,
+                    Duration = movie.Duration,
+                    consultationTime = DateTime.Now
+                };
+                return Ok(movieDto);
             }
             else
             {
@@ -45,7 +62,7 @@ namespace MovieAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult PutMovie(int Id, [FromBody] Movie NewMovie)
+        public IActionResult PutMovie(int Id, [FromBody] UpdateMovieDto movieDto)
         {
             Movie movie = movieContext.Movies.FirstOrDefault(movie => movie.Id == Id);
             if (movie == null)
@@ -54,10 +71,10 @@ namespace MovieAPI.Controllers
             }
             else
             {
-                movie.Title = NewMovie.Title;
-                movie.Director = NewMovie.Director;
-                movie.Gender = NewMovie.Gender;
-                movie.Duration = NewMovie.Duration;
+                movie.Title = movieDto.Title;
+                movie.Director = movieDto.Director;
+                movie.Gender = movieDto.Gender;
+                movie.Duration = movieDto.Duration;
 
                 movieContext.SaveChanges();
                 return NoContent();
