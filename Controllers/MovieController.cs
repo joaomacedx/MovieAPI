@@ -13,7 +13,6 @@ namespace MovieAPI.Controllers
     {
         private MovieContext movieContext;
         private IMapper movieMapper;
-
         public MovieController(MovieContext context, IMapper mapper)
         {
             movieContext = context;
@@ -61,7 +60,6 @@ namespace MovieAPI.Controllers
             else
             {
                 movieMapper.Map(movieDto, movie);
-
                 movieContext.SaveChanges();
                 return NoContent();
             }
